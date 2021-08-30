@@ -92,13 +92,13 @@ module flap_pos(i) {
     }
 }
 
-module configured_flap(index, flap, front_letter, back_letter) {
-    flap_with_letters(flap_color, letter_color, index, flap_gap, flap=flap, front_letter=front_letter, back_letter=back_letter, bleed=bleed);
+module configured_flap(index, flap, front_letter, back_letter,letter_thickness=0.1) {
+    flap_with_letters(flap_color, letter_color, index, flap_gap, flap=flap, front_letter=front_letter, back_letter=back_letter, bleed=bleed, letter_thickness=letter_thickness);
 
     if (layout_double_flaps_for_full_font) {
         translate([0, -flap_pin_width -flap_gap, 0]) {
             rotate([180,0,0]) {
-                flap_with_letters(flap_color, letter_color, index - 1, flap_gap, flap=flap, front_letter=back_letter, back_letter=front_letter, bleed=bleed);
+                flap_with_letters(flap_color, letter_color, index - 1, flap_gap, flap=flap, front_letter=back_letter, back_letter=front_letter, bleed=bleed, letter_thickness=letter_thickness);
             }
         }
     }

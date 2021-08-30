@@ -94,10 +94,11 @@ module _draw_letter(letter) {
     }
 }
 
-module _flap_letter(letter, letter_color, flap_gap, front=true, bleed = 0) {
+module _flap_letter(letter, letter_color, flap_gap, front=true, bleed = 0, letter_thickness=0.1 ) {
+    transaltion = front ? flap_thickness/2 + eps : -flap_thickness/2 - letter_thickness - eps;
     color(letter_color) {
-        translate([0, 0, front ? flap_thickness/2 + eps : -flap_thickness/2 - eps]) {
-            linear_extrude(height=0.1, center=true) {
+        translate([0, 0, letter_thickness < 0? transaltion + letter_thickness: transaltion]) {
+            linear_extrude(height=abs(letter_thickness)) {
                 intersection() {
                     difference() {
                         offset(r=bleed) {
@@ -158,15 +159,15 @@ module _flap_letter(letter, letter_color, flap_gap, front=true, bleed = 0) {
     }
 }
 
-module flap_with_letters(flap_color, letter_color, flap_index, flap_gap, flap=true, front_letter=true, back_letter=true, bleed=0) {
+module flap_with_letters(flap_color, letter_color, flap_index, flap_gap, flap=true, front_letter=true, back_letter=true, bleed=0, letter_thickness=0.1) {
     if (flap) {
         _flap(flap_color);
     }
     if (front_letter) {
-        _flap_letter(get_letter_for_front(flap_index), letter_color, flap_gap, front=true, bleed=bleed);
+        _flap_letter(get_letter_for_front(flap_index), letter_color, flap_gap, front=true, bleed=bleed,letter_thickness=letter_thickness);
     }
     if (back_letter) {
-        _flap_letter(get_letter_for_back(flap_index), letter_color, flap_gap, front=false, bleed=bleed); 
+        _flap_letter(get_letter_for_back(flap_index), letter_color, flap_gap, front=false, bleed=bleed,letter_thickness=letter_thickness); 
     }
 }
 
